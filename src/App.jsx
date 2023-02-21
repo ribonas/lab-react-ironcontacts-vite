@@ -1,32 +1,64 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
+import contacts from './contacts.json'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const data = contacts;
+  const [dataFive, setDataFive] = useState(data.slice(5, 10));
+
+  const contactsList = dataFive.map(contact => {
+
+    const { name, popularity, pictureUrl, id, wonEmmy, wonOscar } = contact;
+
+    return (
+      <tr key={id}>
+          <td><img src={pictureUrl} alt={name} /></td>
+          <td>{name}</td>
+          <td>{Math.round(popularity*100)/100}</td>
+          {wonOscar ? <td>🏆</td> : null}
+          {wonEmmy ? <td>🏆</td> : null}
+        </tr>
+    )
+  })
+  
+  const getRandom = () => {
+
+    const randomIndex = Math.floor(Math.random() * data.length);
+    const randomContact = data[randomIndex];
+
+    return randomContact;
+  }
+
+  const addRandom = () => {
+
+    const newContact = getRandom()
+    const exist = dataFive.filter(contact => contact.id === newContact.id);
+    
+    if (exist.length === 0) {
+      setDataFive([...dataFive, newContact])
+    } else {
+      addRandom();
+    }
+  }
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div className='App'>
+      <h1>IronContacts</h1>
+      <button onClick={addRandom}>Add Random Contact</button>
+      <table className="contacts-table">
+        <thead>
+          <tr>
+            <th>Picture</th>
+            <th>Name</th>
+            <th>Popularity</th>
+            <th>Won an Oscar</th>
+            <th>Won an Emmy</th>
+          </tr>
+        </thead>
+      </table>
+    <tbody>
+      {contactsList}
+    </tbody>
     </div>
   )
 }

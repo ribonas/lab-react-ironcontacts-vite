@@ -67,3 +67,18 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+table {
+  width: 4rem;
+  place-items: center;
+}
+
+td {
+  width: 4rem;
+  place-items: center;
+}
+
+img {
+  width: 4rem;
+  place-items: center;
+}
